@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blob-auth-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blob-auth-mongo
+  template:
+    metadata:
+      labels:
+        app: blob-auth-mongo
+    spec:
+      containers:
+        - name: blob-auth-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: blob-auth-mongo-srv
+spec:
+  selector:
+    app: blob-auth-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

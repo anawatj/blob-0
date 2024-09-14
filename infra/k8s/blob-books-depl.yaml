@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blob-books-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blob-books
+  template:
+    metadata:
+      labels: 
+        app: blob-books
+    spec:
+      containers:
+        - name: blob-books
+          image: anawatj/blob-books
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://blob-books-mongo-srv:27017/books'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: blob-books-srv
+spec:
+  selector:
+    app: blob-books
+  ports:
+    - name: blob-books
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

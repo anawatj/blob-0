@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blob-auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blob-auth
+  template:
+    metadata:
+      labels: 
+        app: blob-auth
+    spec:
+      containers:
+        - name: blob-auth
+          image: anawatj/blob-auth
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://blob-auth-mongo-srv:27017/auth'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: blob-auth-srv
+spec:
+  selector:
+    app: blob-auth
+  ports:
+    - name: blob-auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

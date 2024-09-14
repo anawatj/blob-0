@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blob-frontend-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blob-frontend
+  template:
+    metadata:
+      labels:
+        app: blob-frontend
+    spec:
+      containers:
+        - name: blob-frontend
+          image: anawatj/blob-frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blob-frontend-srv
+spec:
+  selector:
+    app: blob-frontend
+  ports:
+    - name: blob-frontend
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
