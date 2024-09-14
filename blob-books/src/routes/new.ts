@@ -13,6 +13,9 @@ requireAuth,
     body('isbn')
     .isString()
     .withMessage('isbn must be provided'),
+    body('name')
+    .isString()
+    .withMessage("name must be provided"),
     body('price')
     .isFloat({gt:0})
     .withMessage("price must be provided"),
@@ -38,9 +41,10 @@ requireAuth,
 validateRequest,
 async(req:Request,res:Response,next:NextFunction)=>{
     try{
-        const {isbn,price,releaseDate,author,genre,publisher,series,language,additionals,qty} = req.body;
+        const {isbn,name,price,releaseDate,author,genre,publisher,series,language,additionals,qty} = req.body;
         const book = Book.build({
             isbn,
+            name,
             price,
             releaseDate,
             author,

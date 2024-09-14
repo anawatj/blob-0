@@ -13,6 +13,9 @@ router.put("/api/books/:id",
         body('isbn')
             .isString()
             .withMessage('isbn must be provided'),
+        body('name')
+            .isString()
+            .withMessage("name must be provided"),
         body('price')
             .isFloat({ gt: 0 })
             .withMessage("price must be provided"),
@@ -48,9 +51,10 @@ router.put("/api/books/:id",
                 }
             }
 
-            const { isbn, price, releaseDate, author, genre, publisher, series, language, additionals, qty } = req.body;
+            const { isbn,name, price, releaseDate, author, genre, publisher, series, language, additionals, qty } = req.body;
             book.set({
                 isbn,
+                name,
                 price,
                 releaseDate,
                 author,
