@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blob-orders-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blob-orders
+  template:
+    metadata:
+      labels: 
+        app: blob-orders
+    spec:
+      containers:
+        - name: blob-orders
+          image: anawatj/blob-orders
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://blob-orders-mongo-srv:27017/orders'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: blob-orders-srv
+spec:
+  selector:
+    app: blob-orders
+  ports:
+    - name: blob-orders
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

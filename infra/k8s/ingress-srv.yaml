@@ -31,3 +31,10 @@ spec:
                 name: blob-books-srv
                 port:
                   number: 3000
+          - path: /api/orders/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: blob-orders-srv
+                port:
+                  number: 3000

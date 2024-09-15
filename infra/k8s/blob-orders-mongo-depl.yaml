@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blob-orders-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blob-orders-mongo
+  template:
+    metadata:
+      labels:
+        app: blob-orders-mongo
+    spec:
+      containers:
+        - name: blob-orders-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: blob-orders-mongo-srv
+spec:
+  selector:
+    app: blob-orders-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

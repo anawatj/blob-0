@@ -15,8 +15,12 @@ interface BookAttrs {
     userId: string;
 }
 
-interface BookModel extends mongoose.Model<BookDoc> {
-    build(attrs: BookAttrs): BookDoc;
+interface BookModel extends mongoose.Model<BookDoc>{
+    build(attrs:BookAttrs):BookDoc;
+    findByEvent(event: {
+        id: String;
+        version: Number;
+      }): Promise<BookDoc | null>;
 }
 interface BookDoc extends mongoose.Document {
     isbn: string;
@@ -81,24 +85,35 @@ const bookSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true
-    },
-   
+    }
 
-},
-{
-    toJSON: {
-      transform(doc, ret) {
-        ret.id = ret._id;
-        delete ret._id;
-      },
-    },
-  });
-
+});
 bookSchema.set('versionKey', 'version');
 bookSchema.plugin(updateIfCurrentPlugin);
+bookSchema.statics.findByEvent=(event: { id: string; version: number }) => {
+    return Book.findOne({
+        _id: event.id,
+        version: event.version - 1,
+    });
+  };
 bookSchema.statics.build = (attr: BookAttrs) => {
     return new Book(attr);
 }
+bookSchema.methods.isReserved = async function () {
+    // this === the ticket document that we just called 'isReserved' on
+   /* const existingOrder = await Order.findOne({
+      ticket: this as any,
+      status: {
+        $in: [
+          OrderStatus.Created,
+          OrderStatus.AwaitingPayment,
+          OrderStatus.Complete,
+        ],
+      },
+    });*/
+  
+    //return !!existingOrder;
+  };
 const Book = mongoose.model<BookDoc, BookModel>('Book', bookSchema);
 
 export { Book };
