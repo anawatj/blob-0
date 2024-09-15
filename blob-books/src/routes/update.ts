@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { v4 } from 'uuid';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import {path as rootPath}  from 'app-root-path'
+import { path as rootPath } from 'app-root-path'
 import fs from 'fs';
 import path from 'path';
 import { requireAuth, validateRequest, NotFoundError, NotAuthorizedError, currentUser, BadRequestError } from '@taoblob/commons';
@@ -47,22 +47,17 @@ router.put("/api/books/:id",
             if (!req.file) {
                 throw new BadRequestError("image must be provided");
             }
-           
-            
             const fileName = v4();
-            const fileType=req.file!.mimetype.split("/")[1];
-        const fullName = fileName+"."+fileType;
-
-
-
-            const dir = rootPath+"/uploads";
+            const fileType = req.file!.mimetype.split("/")[1];
+            const fullName = fileName + "." + fileType;
+            const dir = rootPath + "/uploads";
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir);
             }
 
-            fs.writeFileSync(dir+"/"+fullName,req.file!.buffer);
+            fs.writeFileSync(dir + "/" + fullName, req.file!.buffer);
 
-            const image = "/api/books/uploads/"+fullName;
+            const image = "/api/books/uploads/" + fullName;
 
 
             const book = await Book.findById(req.params.id);

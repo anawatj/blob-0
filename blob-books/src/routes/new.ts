@@ -56,7 +56,6 @@ async(req:Request,res:Response,next:NextFunction)=>{
        
         const {isbn,name,price,releaseDate,author,genre,publisher,series,language,additionals,qty} = req.body;
         const dir = rootPath+"/uploads";
-        console.log(dir);
         if(!fs.existsSync(dir)){
             fs.mkdirSync(dir);
         }
