@@ -1,8 +1,11 @@
 import express, { NextFunction, Request, Response } from 'express';
+import { v4 } from 'uuid';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
-
-import { requireAuth, validateRequest, NotFoundError, NotAuthorizedError, currentUser } from '@taoblob/commons';
+import {path as rootPath}  from 'app-root-path'
+import fs from 'fs';
+import path from 'path';
+import { requireAuth, validateRequest, NotFoundError, NotAuthorizedError, currentUser, BadRequestError } from '@taoblob/commons';
 import { Book } from '../models/book';
 
 const router = express.Router()
@@ -41,6 +44,27 @@ router.put("/api/books/:id",
     validateRequest,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
+            if (!req.file) {
+                throw new BadRequestError("image must be provided");
+            }
+           
+            
+            const fileName = v4();
+            const fileType=req.file!.mimetype.split("/")[1];
+        const fullName = fileName+"."+fileType;
+
+
+
+            const dir = rootPath+"/uploads";
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir);
+            }
+
+            fs.writeFileSync(dir+"/"+fullName,req.file!.buffer);
+
+            const image = "/api/books/uploads/"+fullName;
+
+
             const book = await Book.findById(req.params.id);
             if (!book) {
                 throw new NotFoundError();
@@ -51,10 +75,11 @@ router.put("/api/books/:id",
                 }
             }
 
-            const { isbn,name, price, releaseDate, author, genre, publisher, series, language, additionals, qty } = req.body;
+            const { isbn, name, price, releaseDate, author, genre, publisher, series, language, additionals, qty } = req.body;
             book.set({
                 isbn,
                 name,
+                image,
                 price,
                 releaseDate,
                 author,

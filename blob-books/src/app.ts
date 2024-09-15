@@ -1,6 +1,8 @@
 import express from 'express';
+import multer from 'multer';
 import json from 'body-parser';
 import cookieSession from "cookie-session";
+import {path as rootPath}  from 'app-root-path'
 import {errorHandler} from '@taoblob/commons';
 import { NotFoundError } from '@taoblob/commons';
 import { indexBookRouter } from './routes';
@@ -11,6 +13,7 @@ import { deleteBookRouter } from './routes/delete';
 const app = express();
 app.set('trust proxy', true);
 app.use(json());
+app.use(multer().single("file"));
 app.use(
   cookieSession({
     signed: false,
@@ -22,6 +25,8 @@ app.use(createBookRouter);
 app.use(updateBookRouter);
 app.use(showBookRouter);
 app.use(deleteBookRouter);
+console.log(rootPath + '/uploads');
+app.use('/api/books/uploads', express.static(rootPath + '/uploads'));
 app.all('*', async (req, res,next) => {
   next(new NotFoundError());
 });

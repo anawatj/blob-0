@@ -3,6 +3,7 @@ import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 interface BookAttrs {
     isbn: string;
     name: string;
+    image: string;
     price: number;
     releaseDate: Date;
     author: string;
@@ -25,6 +26,7 @@ interface BookModel extends mongoose.Model<BookDoc>{
 interface BookDoc extends mongoose.Document {
     isbn: string;
     name: string;
+    image: string;
     price: number;
     releaseDate: Date;
     author: string;
@@ -45,6 +47,10 @@ const bookSchema = new mongoose.Schema({
     name:{
         type: String,
         required: true
+    },
+    image:{
+        type: String,
+        required: true,
     },
     price: {
         type: Number,
