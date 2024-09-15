@@ -87,6 +87,13 @@ const bookSchema = new mongoose.Schema({
         required: true
     }
 
+},{
+    toJSON:{
+        transform(doc,ret){
+            ret.id = ret._id;
+            delete ret._id
+        }
+    }
 });
 bookSchema.set('versionKey', 'version');
 bookSchema.plugin(updateIfCurrentPlugin);
