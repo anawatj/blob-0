@@ -1,23 +1,38 @@
-import { useState, useEffect } from 'react'
+import {useEffect,useState } from 'react'
 import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
-const newBook = () => {
-    const [name, setName] = useState('');
-    const [isbn, setIsbn] = useState('');
-    const [price, setPrice] = useState(0);
-    const [releaseDate, setReleaseDate] = useState('');
-    const [author, setAuthor] = useState('');
-    const [genre, setGenre] = useState('');
-    const [publisher, setPublisher] = useState('');
-    const [language, setLanguage] = useState('');
-    const [qty, setQty] = useState(0);
-    const [series, setSeries] = useState([]);
-    const [additionals, setAdditionals] = useState([]);
+const bookUpdate = ({book,currentUser,bookId})=>{
+    const [name, setName] = useState(book.name);
+    const [isbn, setIsbn] = useState(book.isbn);
+    const [price, setPrice] = useState(book.price);
+    const [releaseDate, setReleaseDate] = useState(book.releaseDate.substring(0,10));
+    const [author, setAuthor] = useState(book.author);
+    const [genre, setGenre] = useState(book.genre);
+    const [publisher, setPublisher] = useState(book.publisher);
+    const [language, setLanguage] = useState(book.language);
+    const [qty, setQty] = useState(book.qty);
+    const [series, setSeries] = useState(book.series);
+    const [additionals, setAdditionals] = useState(book.additionals);
     const [file, setFile] = useState(null);
+
+
+   /* useEffect(()=>{
+        setName(book.name);
+        setIsbn(book.isbn);
+        setPrice(book.price.toString());
+        setReleaseDate(book.releaseDate.toString().substring(0,10));
+        setAuthor(book.author);
+        setGenre(book.genre);
+        setPublisher(book.publisher);
+        setLanguage(book.language);
+        setQty(book.qty.toString());
+        setSeries(book.series);
+        setAdditionals(book.additionals);
+    },[name,isbn,price,releaseDate,author,genre,publisher,language,qty,series,additionals,bookId])*/
     let formData = new FormData();
     const { doRequest, errors } = useRequest({
-        url: '/api/books',
-        method: 'post',
+        url: `/api/books/${bookId}`,
+        method: 'put',
         body:formData,
         onSuccess: () => Router.push('/books')
       });
@@ -55,7 +70,9 @@ const newBook = () => {
     }
     const onSubmit = async event => {
         event.preventDefault();
+        console.log(releaseDate);
         formData.append("name",name);
+        console.log(name);
         formData.append("isbn",isbn);
         formData.append("releaseDate",releaseDate);
         formData.append("author",author);
@@ -65,9 +82,11 @@ const newBook = () => {
         formData.append("price",price);
         formData.append("qty",qty);
         formData.append("file",file);
+        console.log(series);
         series.forEach((serie,index)=>{
             formData.append("series["+index.toString()+"]",serie);
         });
+        console.log(additionals);
         additionals.forEach((additional,index)=>{
             formData.append("additionals["+index.toString()+"]",additional);
         })
@@ -77,7 +96,7 @@ const newBook = () => {
         <form onSubmit={onSubmit}>
             <div className="form-group">
                 <label>Name</label>
-                <input className="form-control" value={name} onChange={e => setName(e.target.value)} />
+                <input className="form-control" value={name}   onChange={e => setName(e.target.value)} />
             </div>
             <div className='form-group'>
                 <label>Isbn</label>
@@ -85,7 +104,7 @@ const newBook = () => {
             </div>
             <div className='form-group'>
                 <label>releaseDate</label>
-                <input className="form-control" type='date' data-date-format={"YYYY-MM-DD"} value={releaseDate} onChange={e => setReleaseDate(e.target.value)} />
+                <input className="form-control" type='date'  data-date-format={"yyyy-MM-dd"} value={releaseDate} onChange={e => setReleaseDate(e.target.value)} />
             </div>
             <div className='form-group'>
                 <label>author</label>
@@ -120,8 +139,8 @@ const newBook = () => {
                 <label>series</label>
                 <div>
                     <ul>
-                        <li><input type="checkbox" value={"test1"} onChange={e=>seriesHandle(e)}/><label>Test1</label></li>
-                        <li><input type="checkbox" value={"test2"} onChange={e=>seriesHandle(e)}/><label>Test2</label></li>
+                        <li><input type="checkbox" defaultChecked={series.includes("test1")} value={"test1"} onChange={e=>seriesHandle(e)}/><label>Test1</label></li>
+                        <li><input type="checkbox" defaultChecked={series.includes("test2")} value={"test2"} onChange={e=>seriesHandle(e)}/><label>Test2</label></li>
                     </ul>
                 </div>
             </div>
@@ -129,8 +148,8 @@ const newBook = () => {
                 <label>additionals</label>
                 <div>
                     <ul>
-                        <li><input type="checkbox" value={"add1"} onChange={e=>additionalsHandle(e)}/><label>Add1</label></li>
-                        <li><input type="checkbox" value={"add2"} onChange={e=>additionalsHandle(e)}/><label>Add2</label></li>
+                        <li><input type="checkbox" defaultChecked={additionals.includes("add1")} value={"add1"} onChange={e=>additionalsHandle(e)}/><label>Add1</label></li>
+                        <li><input type="checkbox" defaultChecked={additionals.includes("add2")} value={"add2"} onChange={e=>additionalsHandle(e)}/><label>Add2</label></li>
                     </ul>
                 </div>
             </div>
@@ -140,4 +159,12 @@ const newBook = () => {
     )
 }
 
-export default newBook
+bookUpdate.getInitialProps= async (context, client,currentUser) => {
+    const { bookId } = context.query;
+    const { data } = await client.get(`/api/books/${bookId}`);
+  
+    return { book: data,currentUser,bookId };
+  };
+
+  export default bookUpdate;
+  

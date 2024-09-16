@@ -41,7 +41,7 @@ const BookIndex = ({ books, currentUser }) => {
                                 <td>{book.qty}</td>
                                 <td><img width={"50px"} height={"50px"} src={webUrl + book.image} /></td>
                                 <td>
-                                    <Link href={"#"}>Edit</Link>&nbsp;
+                                    <Link href={`/books/${book.id}`}>Edit</Link>&nbsp;
                                     <Link href={"#"}>Delete</Link>
                                 </td>
                             </tr>
