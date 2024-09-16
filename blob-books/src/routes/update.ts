@@ -5,14 +5,14 @@ import jwt from 'jsonwebtoken';
 import { path as rootPath } from 'app-root-path'
 import fs from 'fs';
 import path from 'path';
-import { requireAuth, validateRequest, NotFoundError, NotAuthorizedError, currentUser, BadRequestError } from '@taoblob/commons';
+import { requireAuth, validateRequest, NotFoundError, NotAuthorizedError, currentUser, BadRequestError, isEmployee } from '@taoblob/commons';
 import { Book } from '../models/book';
 import { uploadFile } from '../services/file-service';
 
 const router = express.Router()
 router.put("/api/books/:id",
     currentUser,
-    requireAuth,
+    isEmployee,
     [
         body('isbn')
             .isString()

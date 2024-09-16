@@ -1,10 +1,17 @@
 import Link from "next/link";
 import webUrl from '../../api/base-web'
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import axios from "axios";
+import { useEffect } from "react";
 const BookIndex = ({ books, currentUser,client }) => {
+    
     const router = useRouter();
-
+ 
+    useEffect(()=>{
+        if(currentUser.role=="CUSTOMER"){
+            router.push("/");
+        }
+    },[currentUser]);
    
     const handleNewClick=()=>{
         router.push("/books/new");
@@ -66,9 +73,16 @@ const BookIndex = ({ books, currentUser,client }) => {
 
 }
 BookIndex.getInitialProps = async (context, client, currentUser) => {
-    const { data } = await client.get('/api/books');
-    console.log(data);
-    return { books: data, currentUser: currentUser}
+        if(currentUser.role=="CUSTOMER"){
+            
+            return {books:[],currentUser:currentUser};
+        }
+   
+        const { data } = await client.get('/api/books');
+        console.log(data);
+        return { books: data, currentUser: currentUser}
+   
+    
 }
 
 export default BookIndex;

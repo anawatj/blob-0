@@ -9,7 +9,7 @@ import { BadRequestError } from '@taoblob/commons';
 const router = express.Router();
 
 router.post(
-  '/api/users/managers',
+  '/api/users',
   [
     body('email')
       .isEmail()
@@ -17,12 +17,17 @@ router.post(
     body('password')
       .trim()
       .isLength({ min: 4, max: 20 })
-      .withMessage('Password must be between 4 and 20 characters')
+      .withMessage('Password must be between 4 and 20 characters'),
+    body('role')
+      .trim()
+      .isString()
+      .withMessage("role must be provided")
+    
   ],
   validateRequest,
   async (req: Request, res: Response,next:NextFunction) => {
     try{
-      const { email, password } = req.body;
+      const { email, password,role } = req.body;
 
       const existingUser = await User.findOne({ email });
   
@@ -30,7 +35,7 @@ router.post(
         throw new BadRequestError('Email in use');
       }
   
-      const user = User.build({ email, password,role:"MANAGER" });
+      const user = User.build({ email, password,role:role });
       await user.save();
 
       console.log(user.role)
@@ -58,4 +63,4 @@ router.post(
   }
 );
 
-export { router as managerRouter };
+export { router as newUserRouter };

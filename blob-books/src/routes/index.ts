@@ -1,9 +1,9 @@
 import express,{Request,Response} from 'express';
 import { Book } from '../models/book';
-import { currentUser, requireAuth } from '@taoblob/commons';
+import { currentUser, isEmployee, requireAuth } from '@taoblob/commons';
 
 const router = express.Router();
-router.get("/api/books",currentUser,requireAuth,async(req:Request,res:Response)=>{
+router.get("/api/books",currentUser,isEmployee,async(req:Request,res:Response)=>{
     console.log(req.currentUser!)
     if(req.currentUser!.role=="MANAGER"){
         const books = await Book.find({});

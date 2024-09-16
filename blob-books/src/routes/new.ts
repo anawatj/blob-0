@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { body } from 'express-validator';
-import { BadRequestError, currentUser, requireAuth, validateRequest } from '@taoblob/commons';
+import { BadRequestError, currentUser, isEmployee, requireAuth, validateRequest } from '@taoblob/commons';
 import { Book } from '../models/book';
 import { uploadFile } from '../services/file-service';
 
@@ -8,7 +8,7 @@ import { uploadFile } from '../services/file-service';
 const router = express.Router()
 router.post("/api/books",
     currentUser,
-    requireAuth,
+    isEmployee,
     [
         body('isbn')
             .isString()

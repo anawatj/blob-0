@@ -7,7 +7,7 @@ import { currentUserRouter} from './routes/current-user';
 import { signupRouter } from './routes/signup';
 import { signinRouter } from './routes/signin';
 import { signoutRouter } from './routes/signout';
-import { managerRouter } from './routes/create-manager';
+import { newUserRouter } from './routes/new';
 const app = express();
 app.set('trust proxy', true);
 app.use(json());
@@ -21,7 +21,7 @@ app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
-app.use(managerRouter);
+app.use(newUserRouter);
 app.all('*', async (req, res,next) => {
   next(new NotFoundError());
 });

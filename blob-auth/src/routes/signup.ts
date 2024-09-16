@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
-import { validateRequest } from '@taoblob/commons';
+import { UserType, validateRequest } from '@taoblob/commons';
 import { User } from '../models/user';
 import { BadRequestError } from '@taoblob/commons';
 
@@ -30,7 +30,7 @@ router.post(
         throw new BadRequestError('Email in use');
       }
   
-      const user = User.build({ email, password,role:"USER" });
+      const user = User.build({ email, password,role:UserType.CUSTOMER });
       await user.save();
   
       // Generate JWT

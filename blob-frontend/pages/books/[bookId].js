@@ -2,19 +2,26 @@ import {useEffect,useState } from 'react'
 import  { useRouter } from 'next/router';
 import useRequest from '../../hooks/use-request';
 const BookUpdate = ({book,currentUser,bookId})=>{
-    const [name, setName] = useState(book.name);
-    const [isbn, setIsbn] = useState(book.isbn);
-    const [price, setPrice] = useState(book.price);
-    const [releaseDate, setReleaseDate] = useState(book.releaseDate.substring(0,10));
-    const [author, setAuthor] = useState(book.author);
-    const [genre, setGenre] = useState(book.genre);
-    const [publisher, setPublisher] = useState(book.publisher);
-    const [language, setLanguage] = useState(book.language);
-    const [qty, setQty] = useState(book.qty);
-    const [series, setSeries] = useState(book.series);
-    const [additionals, setAdditionals] = useState(book.additionals);
-    const [file, setFile] = useState(null);
     const router = useRouter();
+    useEffect(()=>{
+        if(currentUser.role=="CUSTOMER"){
+            router.push("/");
+        }
+    },[currentUser]);
+    const [name, setName] = useState(book.name?book.name:"");
+    const [isbn, setIsbn] = useState(book.isbn?book.isbn:"");
+    const [price, setPrice] = useState(book.price?book.price:0);
+    const [releaseDate, setReleaseDate] = useState(book.releaseDate?book.releaseDate.substring(0,10):"");
+    const [author, setAuthor] = useState(book.author?book.author:"");
+    const [genre, setGenre] = useState(book.genre?book.genre:"");
+    const [publisher, setPublisher] = useState(book.publisher?book.publisher:"");
+    const [language, setLanguage] = useState(book.language?book.language:"");
+    const [qty, setQty] = useState(book.qty?book.qty:0);
+    const [series, setSeries] = useState(book.series?book.series:[]);
+    const [additionals, setAdditionals] = useState(book.additionals?book.additionals:[]);
+    const [file, setFile] = useState(null);
+    
+   
 
     let formData = new FormData();
     const { doRequest, errors } = useRequest({
@@ -147,6 +154,9 @@ const BookUpdate = ({book,currentUser,bookId})=>{
 }
 
 BookUpdate.getInitialProps= async (context, client,currentUser) => {
+    if(currentUser.role=="CUSTOMER"){
+        return {book:{},currentUser,undefined};
+    }
     const { bookId } = context.query;
     const { data } = await client.get(`/api/books/${bookId}`);
   

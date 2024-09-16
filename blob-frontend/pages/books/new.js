@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import useRequest from '../../hooks/use-request';
 import { useRouter } from 'next/router';
-const newBook = () => {
+const newBook = ({currentUser}) => {
     const [name, setName] = useState('');
     const [isbn, setIsbn] = useState('');
     const [price, setPrice] = useState(0);
@@ -15,6 +15,11 @@ const newBook = () => {
     const [additionals, setAdditionals] = useState([]);
     const [file, setFile] = useState(null);
     const router = useRouter();
+    useEffect(()=>{
+        if(currentUser.role=="CUSTOMER"){
+            router.push("/");
+        }
+    },[currentUser])
     let formData = new FormData();
     const { doRequest, errors } = useRequest({
         url: '/api/books',
@@ -139,6 +144,9 @@ const newBook = () => {
             <button className='btn btn-primary'>Save</button>
         </form>
     )
+}
+newBook.getInitialProps=async(context, client, currentUser)=>{
+    return {currentUser:currentUser}
 }
 
 export default newBook
