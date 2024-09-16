@@ -10,6 +10,7 @@ import { createBookRouter } from './routes/new';
 import { updateBookRouter } from './routes/update';
 import { showBookRouter } from './routes/show';
 import { deleteBookRouter } from './routes/delete';
+import { storeBookRouter } from './routes/store';
 const app = express();
 app.set('trust proxy', true);
 app.use(json());
@@ -25,6 +26,7 @@ app.use(createBookRouter);
 app.use(updateBookRouter);
 app.use(showBookRouter);
 app.use(deleteBookRouter);
+app.use(storeBookRouter);
 console.log(rootPath + '/uploads');
 app.use('/api/books/uploads', express.static(rootPath + '/uploads'));
 app.all('*', async (req, res,next) => {
