@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
+import { useRouter } from 'next/router';
 const newBook = () => {
     const [name, setName] = useState('');
     const [isbn, setIsbn] = useState('');
@@ -14,12 +14,13 @@ const newBook = () => {
     const [series, setSeries] = useState([]);
     const [additionals, setAdditionals] = useState([]);
     const [file, setFile] = useState(null);
+    const router = useRouter();
     let formData = new FormData();
     const { doRequest, errors } = useRequest({
         url: '/api/books',
         method: 'post',
         body:formData,
-        onSuccess: () => Router.push('/books')
+        onSuccess: () => router.push('/books')
       });
     const handleFileChange = (e) => {
         if (e.target.files) {

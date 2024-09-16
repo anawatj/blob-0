@@ -1,7 +1,7 @@
 import {useEffect,useState } from 'react'
-import Router from 'next/router';
+import  { useRouter } from 'next/router';
 import useRequest from '../../hooks/use-request';
-const bookUpdate = ({book,currentUser,bookId})=>{
+const BookUpdate = ({book,currentUser,bookId})=>{
     const [name, setName] = useState(book.name);
     const [isbn, setIsbn] = useState(book.isbn);
     const [price, setPrice] = useState(book.price);
@@ -14,27 +14,14 @@ const bookUpdate = ({book,currentUser,bookId})=>{
     const [series, setSeries] = useState(book.series);
     const [additionals, setAdditionals] = useState(book.additionals);
     const [file, setFile] = useState(null);
+    const router = useRouter();
 
-
-   /* useEffect(()=>{
-        setName(book.name);
-        setIsbn(book.isbn);
-        setPrice(book.price.toString());
-        setReleaseDate(book.releaseDate.toString().substring(0,10));
-        setAuthor(book.author);
-        setGenre(book.genre);
-        setPublisher(book.publisher);
-        setLanguage(book.language);
-        setQty(book.qty.toString());
-        setSeries(book.series);
-        setAdditionals(book.additionals);
-    },[name,isbn,price,releaseDate,author,genre,publisher,language,qty,series,additionals,bookId])*/
     let formData = new FormData();
     const { doRequest, errors } = useRequest({
         url: `/api/books/${bookId}`,
         method: 'put',
         body:formData,
-        onSuccess: () => Router.push('/books')
+        onSuccess: () => router.push("/books")
       });
     const handleFileChange = (e) => {
         if (e.target.files) {
@@ -159,12 +146,12 @@ const bookUpdate = ({book,currentUser,bookId})=>{
     )
 }
 
-bookUpdate.getInitialProps= async (context, client,currentUser) => {
+BookUpdate.getInitialProps= async (context, client,currentUser) => {
     const { bookId } = context.query;
     const { data } = await client.get(`/api/books/${bookId}`);
   
     return { book: data,currentUser,bookId };
   };
 
-  export default bookUpdate;
+  export default BookUpdate;
   

@@ -1,9 +1,28 @@
 import Link from "next/link";
 import webUrl from '../../api/base-web'
-import  Router  from "next/router";
+import useRequest  from '../../hooks/use-request';
+import { useState } from "react";
+import { useRouter } from "next/router";
 const BookIndex = ({ books, currentUser }) => {
+    const [bookId,setBookId] = useState('');
+    const router = useRouter();
+    const { doRequest, errors } = useRequest({
+        url: `/api/books/${bookId}`,
+        method: 'delete',
+        body:{},
+        onSuccess: () => router.push("/books")
+      });
     const handleNewClick=()=>{
-        Router.push("/books/new");
+        router.push("/books/new");
+    }
+    const handleDelete=async(id)=>{
+        if(confirm("Are you sure to delete this user")){
+            console.log(id);
+            setBookId(id);
+            await doRequest();            
+            router.push("/books"); 
+        }
+        
     }
     return (
         <div >
@@ -42,7 +61,7 @@ const BookIndex = ({ books, currentUser }) => {
                                 <td><img width={"50px"} height={"50px"} src={webUrl + book.image} /></td>
                                 <td>
                                     <Link href={`/books/${book.id}`}>Edit</Link>&nbsp;
-                                    <Link href={"#"}>Delete</Link>
+                                    <Link href={"#"} onClick={()=>handleDelete(book.id)}>Delete</Link>
                                 </td>
                             </tr>
                         })
@@ -55,7 +74,8 @@ const BookIndex = ({ books, currentUser }) => {
 }
 BookIndex.getInitialProps = async (context, client, currentUser) => {
     const { data } = await client.get('/api/books');
-    return { books: data, currentUser: currentUser }
+    console.log(data);
+    return { books: data, currentUser: currentUser}
 }
 
 export default BookIndex;
