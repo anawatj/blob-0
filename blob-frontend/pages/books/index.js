@@ -1,27 +1,19 @@
 import Link from "next/link";
 import webUrl from '../../api/base-web'
-import useRequest  from '../../hooks/use-request';
-import { useState } from "react";
 import { useRouter } from "next/router";
-const BookIndex = ({ books, currentUser }) => {
-    const [bookId,setBookId] = useState('');
+import axios from "axios";
+const BookIndex = ({ books, currentUser,client }) => {
     const router = useRouter();
-    const { doRequest, errors } = useRequest({
-        url: `/api/books/${bookId}`,
-        method: 'delete',
-        body:{},
-        onSuccess: () => router.push("/books")
-      });
+
+   
     const handleNewClick=()=>{
         router.push("/books/new");
     }
     const handleDelete=async(id)=>{
-        if(confirm("Are you sure to delete this user")){
+        if(confirm("Are you sure to delete this books")){
             console.log(id);
-            setBookId(id);
-            console.log(bookId);
-            await doRequest();            
-            router.push("/books"); 
+            const result = await axios.delete(`/api/books/${id}`);
+            router.reload();
         }
         
     }

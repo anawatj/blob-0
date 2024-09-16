@@ -3,7 +3,7 @@ import express,{NextFunction, Request,Response} from 'express';
 import { Book } from '../models/book';
 
 const router = express.Router();
-router.delete("/api/books/:id",currentUser,requireAuth, async(req:Request,res:Response,next:NextFunction)=>{
+router.delete("/api/books/:id",currentUser, async(req:Request,res:Response,next:NextFunction)=>{
     try{
     
         const book = await Book.findById(req.params.id);
