@@ -19,6 +19,7 @@ const BookIndex = ({ books, currentUser }) => {
         if(confirm("Are you sure to delete this user")){
             console.log(id);
             setBookId(id);
+            console.log(bookId);
             await doRequest();            
             router.push("/books"); 
         }
