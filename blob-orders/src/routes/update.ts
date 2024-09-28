@@ -1,6 +1,6 @@
 import express ,{NextFunction, Request,Response} from 'express';
 import {body} from 'express-validator';
-import { validateRequest,NotFoundError,requireAuth,NotAuthorizedError, currentUser } from '@taoblob/commons';
+import { validateRequest,NotFoundError,requireAuth,NotAuthorizedError, currentUser, isEmployee } from '@taoblob/commons';
 import { Order } from '../models/order';
 //import { natsWrapper } from '../nats-wrapper';
 import { OrderStatus } from '@taoblob/commons';
@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.put("/api/orders/:id",
 currentUser,
-requireAuth,
+isEmployee,
 [
     body('orderName')
     .isString()

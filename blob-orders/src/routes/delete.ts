@@ -1,9 +1,9 @@
-import { currentUser, NotAuthorizedError, NotFoundError, requireAuth } from '@taoblob/commons';
+import { currentUser, isEmployee, NotAuthorizedError, NotFoundError, requireAuth } from '@taoblob/commons';
 import express,{NextFunction, Request,Response} from 'express';
 import { Order } from '../models/order';
 
 const router = express.Router();
-router.delete("/api/orders/:id",currentUser,requireAuth, async(req:Request,res:Response,next:NextFunction)=>{
+router.delete("/api/orders/:id",currentUser,isEmployee, async(req:Request,res:Response,next:NextFunction)=>{
     try{
         const order = await Order.findById(req.params.id);
         if(req.currentUser?.role=="USER"){

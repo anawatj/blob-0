@@ -1,0 +1,69 @@
+import { useState, useEffect } from 'react'
+import useRequest from '../../hooks/use-request';
+import { useRouter } from 'next/router';
+const newOrder=({currentUser})=>{
+  const router = useRouter();
+  const data =router.query.data;
+  const carts= JSON.parse(data);
+  console.log(carts);
+
+  const [orderName,setOrderName]= useState('');
+  const [orderDate,setOrderDate]=useState('');
+  const [orderAmount,setOrderAmount]=useState(0);
+  const [shipName,setShipName]=useState('');
+  const [shipAddress,setShipAddress]=useState('');
+  const [items,setItems]=useState(carts?carts:[]);
+  const { doRequest, errors } = useRequest({
+    url: '/api/orders',
+    method: 'post',
+    body:{
+      orderName,
+      orderDate,
+      orderAmount,
+      shipName,
+      shipAddress,
+      items
+    },
+    onSuccess: () =>router.push("/orders")
+  });
+  const onSubmit = async event => {
+    event.preventDefault();
+    await doRequest();
+  }
+
+  return (
+    <form onSubmit={onSubmit}>
+      <div className='form-group'>
+          <div className='form-group'>
+            <label>OrderName</label>
+            <input type='text' className='form-control' value={orderName} onChange={e=>setOrderName(e.target.value)}/>
+          </div>
+          <div className='form-group'>
+            <label>Date</label>
+            <input type='date' className='form-control' value={orderDate} onChange={e=>setOrderDate(e.target.value)}/>
+          </div>
+          <div className='form-group'>
+            <label>Amount</label>
+            <input type='number' className='form-control' value={orderAmount} onChange={e=>setOrderAmount(e.target.value)}/>
+          </div>
+          <div className='form-group'>
+            <label>Ship Name</label>
+            <input type='text' className='form-control' value={shipName} onChange={e=>setShipName(e.target.value)}/>
+          </div>
+          <div className='form-group'>
+            <label>Ship Address</label>
+            <textarea className='form-control' value={shipAddress} onChange={e=>setShipAddress(e.target.value)}/>
+          </div>
+         
+          {errors}
+          <button className='btn btn-primary'>Save</button>
+      </div>
+    </form>
+  )
+
+}
+
+newOrder.getInitialProps=async(context, client, currentUser)=>{
+  return {currentUser:currentUser}
+}
+export default newOrder

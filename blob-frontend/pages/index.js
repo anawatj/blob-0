@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import buildClient from '../api/build-client';
 import CartItem from '../components/cart-item';
 import CartModal from '../components/cart-modal';
-
+import { useRouter } from 'next/router'
 
 const LandingPage = ({ currentUser, stores }) => {
   const [carts, setCarts] = useState([]);
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+  const router = useRouter();
   const addToCard = (store) => {
     if (!carts.map(c => c.id).includes(store.id)) {
       carts.push({ id: store.id, name: store.name, image: store.image, price: store.price, qty: 1 });
@@ -23,7 +24,20 @@ const LandingPage = ({ currentUser, stores }) => {
 
     setIsCartModalOpen(false);
   }
+  const payment = () => {
+    //sessionStorage.clear();
+    //sessionStorage.setItem("carts",carts.map(cart=>{
+    //  return {bookId:cart.id,qty:cart.qty,price:cart.price}
+    //}));
+    const data = carts.map(cart=>{
+      return {bookId:cart.id,qty:cart.qty,price:cart.price}
+    })
+    router.push({pathname:"/orders/new",query:{data:JSON.stringify(data)}});
+  
+   // router.push("/orders/new",{state:data});
+   
 
+  }
 
   return currentUser && currentUser != null ? (
 
@@ -47,6 +61,7 @@ const LandingPage = ({ currentUser, stores }) => {
         </div>
         <div className='col-sm-3'>
           <button className='btn btn-primary' onClick={() => viewCart()}>Carts</button>
+          <button className='btn btn-primary' onClick={() => payment()}>Payment</button>
         </div>
       </div>
 

@@ -41,7 +41,7 @@ async(req:Request,res:Response,next:NextFunction)=>{
             orderStatus:OrderStatus.Waiting,
             shipName,
             shipAddress,
-            items,
+            items:items,
             userId:req.currentUser!.id
         });
         await order.save()
