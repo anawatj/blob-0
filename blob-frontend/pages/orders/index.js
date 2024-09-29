@@ -6,7 +6,7 @@ import { useEffect } from "react";
 const OrderIndex = ({ orders, currentUser, client }) => {
 
     const router = useRouter();
-   
+
 
     useEffect(() => {
         if (currentUser.role == "CUSTOMER") {
@@ -15,7 +15,14 @@ const OrderIndex = ({ orders, currentUser, client }) => {
     }, [currentUser]);
 
 
-
+    const handleDelete=async(id)=>{
+        if(confirm("Are you sure to delete this orders")){
+            console.log(id);
+            const result = await axios.delete(`/api/orders/${id}`);
+            router.reload();
+        }
+        
+    }
 
     return (
         <div >
@@ -32,6 +39,9 @@ const OrderIndex = ({ orders, currentUser, client }) => {
                         <th>
                             Order Amount
                         </th>
+                        <th>
+                            Action
+                        </th>
 
                     </tr>
                 </thead>
@@ -42,7 +52,10 @@ const OrderIndex = ({ orders, currentUser, client }) => {
                                 <td>{order.orderName}</td>
                                 <td>{order.orderDate}</td>
                                 <td>{order.orderAmount}</td>
-
+                                <th>
+                                    <Link href={`/orders/${order.id}`}>Edit</Link>&nbsp;
+                                    <Link href={"#"} onClick={()=>handleDelete(order.id)}>Delete</Link>
+                                </th>
                             </tr>
                         })
                     }

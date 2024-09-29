@@ -3,9 +3,13 @@ import useRequest from '../../hooks/use-request';
 import { useRouter } from 'next/router';
 const newOrder=({currentUser})=>{
   const router = useRouter();
-  const data =router.query.data;
-  const carts= JSON.parse(data);
-  console.log(carts);
+  let carts=[];
+  if(localStorage){
+    const data =localStorage.getItem("data");
+    carts=JSON.parse(data);
+    console.log(carts);
+  }
+ 
 
   const [orderName,setOrderName]= useState('');
   const [orderDate,setOrderDate]=useState('');

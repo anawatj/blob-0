@@ -29,10 +29,14 @@ const LandingPage = ({ currentUser, stores }) => {
     //sessionStorage.setItem("carts",carts.map(cart=>{
     //  return {bookId:cart.id,qty:cart.qty,price:cart.price}
     //}));
+    localStorage.clear();
     const data = carts.map(cart=>{
       return {bookId:cart.id,qty:cart.qty,price:cart.price}
     })
-    router.push({pathname:"/orders/new",query:{data:JSON.stringify(data)}});
+   localStorage.setItem("data",JSON.stringify(data));
+   
+    
+    router.push("/orders/new");
   
    // router.push("/orders/new",{state:data});
    
@@ -73,10 +77,11 @@ const LandingPage = ({ currentUser, stores }) => {
 
 LandingPage.getInitialProps = async (context, client, currentUser) => {
   console.log('CART PAGE!');
+  console.log("Context",context);
   const { data } = await client.get('/api/stores');
   //const { stores } = await client.get("/api/stores");
 
-  return { currentUser: currentUser, stores: data };
+  return {currentUser: currentUser, stores: data };
 };
 
 export default LandingPage;
