@@ -17,6 +17,12 @@ isEmployee,
     body('orderDate')
     .isDate()
     .withMessage("orderDate must be provided"),
+    body('cardNumber')
+    .isCreditCard()
+    .withMessage("credit card must be provided"),
+    body("cardHolder")
+    .isString()
+    .withMessage("card holder must be provided"),
     body('shipName')
     .isString()
     .withMessage('shipName is not incorrect format'),
@@ -41,6 +47,8 @@ async(req:Request,res:Response,next:NextFunction)=>{
            orderName:req.body.orderName ,
            orderDate:req.body.orderDate,
            orderStatus:OrderStatus.Paid,
+           cardNumber:req.body.cardNumber,
+           cardHolder:req.body.cardHolder,
            shipName:req.body.shipName,
            shipAddress:req.body.shipAddress,
            items:req.body.items,

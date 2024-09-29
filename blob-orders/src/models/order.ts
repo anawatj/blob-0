@@ -5,6 +5,8 @@ interface OrderAttrs{
     orderName:String ,
     orderDate:Date ,
     orderStatus:OrderStatus,
+    cardNumber:String,
+    cardHolder:String,
     shipName:String ,
     shipAddress:String ,
     items:[{bookId:String,price:Number,qty:Number}],
@@ -14,6 +16,8 @@ interface OrderDoc extends mongoose.Document {
     orderName:String ,
     orderDate:Date ,
     orderStatus:OrderStatus,
+    cardNumber:String,
+    cardHolder:String,
     shipName:String ,
     shipAddress:String ,
     items:[{bookId:String,price:Number,qty:Number}],
@@ -37,6 +41,14 @@ const orderSchema = new mongoose.Schema({
         enum: Object.values(OrderStatus),
         default: OrderStatus.Waiting,
       },
+    cardNumber:{
+        type: String ,
+        required: true,
+    },
+    cardHolder:{
+        type: String,
+        required: true
+    },
     shipName:{
         type:String,
         required:true

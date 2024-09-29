@@ -17,6 +17,12 @@ requireAuth,
     body('orderDate')
     .isDate()
     .withMessage("orderDate must be provided"),
+    body('cardNumber')
+    .isCreditCard()
+    .withMessage("credit card must be provided"),
+    body("cardHolder")
+    .isString()
+    .withMessage("card holder must be provided"),
     body('shipName')
     .isString()
     .withMessage('shipName is not incorrect format'),
@@ -30,11 +36,13 @@ requireAuth,
 validateRequest,
 async(req:Request,res:Response,next:NextFunction)=>{
     try{
-        const {orderName,orderDate,shipName,shipAddress,items} = req.body;
+        const {orderName,orderDate,cardNumber,cardHolder,shipName,shipAddress,items} = req.body;
         const order = Order.build({
             orderName,
             orderDate,
             orderStatus:OrderStatus.Waiting,
+            cardNumber,
+            cardHolder,
             shipName,
             shipAddress,
             items:items,
