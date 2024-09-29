@@ -53,7 +53,6 @@ const OrderIndex = ({ orders, currentUser, client }) => {
                                 <td>{order.orderDate}</td>
                                 <td>{order.orderAmount}</td>
                                 <th>
-                                    <Link href={`/orders/${order.id}`}>Edit</Link>&nbsp;
                                     <Link href={"#"} onClick={()=>handleDelete(order.id)}>Delete</Link>
                                 </th>
                             </tr>
