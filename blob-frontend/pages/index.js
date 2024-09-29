@@ -11,7 +11,7 @@ const LandingPage = ({ currentUser, stores }) => {
   useEffect(()=>{
     localStorage.clear();
     localStorage.setItem("data",JSON.stringify(carts));
-  },[carts])
+  },[])
   const addToCard = (store) => {
     if (!carts.map(c => c.id).includes(store.id)) {
       carts.push({ id: store.id, name: store.name, image: store.image, price: store.price, qty: 1 });
