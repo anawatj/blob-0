@@ -15,12 +15,12 @@ const OrderIndex = ({ orders, currentUser, client }) => {
     }, [currentUser]);
 
 
-    const handleDelete=async(id)=>{
-        if(confirm("Are you sure to delete this orders")){
+    const handleDelete = async (id) => {
+        if (confirm("Are you sure to delete this orders")) {
             const result = await axios.delete(`/api/orders/${id}`);
             router.reload();
         }
-        
+
     }
 
     return (
@@ -48,7 +48,8 @@ const OrderIndex = ({ orders, currentUser, client }) => {
                                 <td>{order.orderName}</td>
                                 <td>{order.orderDate}</td>
                                 <th>
-                                    <Link href={"#"} onClick={()=>handleDelete(order.id)}>Delete</Link>
+                                    <Link href={`/orders/${order.id}`}>View</Link>&nbsp;
+                                    <Link href={"#"} onClick={() => handleDelete(order.id)}>Delete</Link>
                                 </th>
                             </tr>
                         })

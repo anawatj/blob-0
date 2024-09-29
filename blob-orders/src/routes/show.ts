@@ -5,6 +5,7 @@ import { Order } from '../models/order';
 const router = express.Router();
 router.get("/api/orders/:id",currentUser,isEmployee, async(req:Request,res:Response,next:NextFunction)=>{
     try{
+        console.log(req.params.id);
         const order = await Order.findById(req.params.id);
         if(req.currentUser?.role=="USER"){
             if(order?.userId!=req.currentUser!.id){
