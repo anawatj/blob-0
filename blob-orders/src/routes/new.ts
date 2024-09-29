@@ -17,9 +17,6 @@ requireAuth,
     body('orderDate')
     .isDate()
     .withMessage("orderDate must be provided"),
-    body('orderAmount')
-    .isFloat({gt:0})
-    .withMessage("orderAmount must be provided"),
     body('shipName')
     .isString()
     .withMessage('shipName is not incorrect format'),
@@ -33,11 +30,10 @@ requireAuth,
 validateRequest,
 async(req:Request,res:Response,next:NextFunction)=>{
     try{
-        const {orderName,orderDate,orderAmount,shipName,shipAddress,items} = req.body;
+        const {orderName,orderDate,shipName,shipAddress,items} = req.body;
         const order = Order.build({
             orderName,
             orderDate,
-            orderAmount,
             orderStatus:OrderStatus.Waiting,
             shipName,
             shipAddress,

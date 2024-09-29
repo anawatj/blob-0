@@ -17,9 +17,6 @@ isEmployee,
     body('orderDate')
     .isDate()
     .withMessage("orderDate must be provided"),
-    body('orderAmount')
-    .isFloat({gt:0})
-    .withMessage("orderAmount must be provided"),
     body('shipName')
     .isString()
     .withMessage('shipName is not incorrect format'),
@@ -43,7 +40,6 @@ async(req:Request,res:Response,next:NextFunction)=>{
         order.set({
            orderName:req.body.orderName ,
            orderDate:req.body.orderDate,
-           orderAmount:req.body.orderAmount,
            orderStatus:OrderStatus.Paid,
            shipName:req.body.shipName,
            shipAddress:req.body.shipAddress,

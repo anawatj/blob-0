@@ -37,9 +37,6 @@ const OrderIndex = ({ orders, currentUser, client }) => {
                             Order Date
                         </th>
                         <th>
-                            Order Amount
-                        </th>
-                        <th>
                             Action
                         </th>
 
@@ -51,7 +48,6 @@ const OrderIndex = ({ orders, currentUser, client }) => {
                             return <tr key={order.id}>
                                 <td>{order.orderName}</td>
                                 <td>{order.orderDate}</td>
-                                <td>{order.orderAmount}</td>
                                 <th>
                                     <Link href={"#"} onClick={()=>handleDelete(order.id)}>Delete</Link>
                                 </th>

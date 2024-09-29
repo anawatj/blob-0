@@ -4,7 +4,6 @@ import  {OrderStatus}   from '@taoblob/commons';
 interface OrderAttrs{
     orderName:String ,
     orderDate:Date ,
-    orderAmount:Number ,
     orderStatus:OrderStatus,
     shipName:String ,
     shipAddress:String ,
@@ -14,7 +13,6 @@ interface OrderAttrs{
 interface OrderDoc extends mongoose.Document {
     orderName:String ,
     orderDate:Date ,
-    orderAmount:Number ,
     orderStatus:OrderStatus,
     shipName:String ,
     shipAddress:String ,
@@ -32,10 +30,6 @@ const orderSchema = new mongoose.Schema({
     },
     orderDate:{
         type:mongoose.Schema.Types.Date
-    },
-    orderAmount:{
-        type:Number,
-        required:true
     },
     orderStatus: {
         type: String,

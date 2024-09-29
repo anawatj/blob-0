@@ -9,7 +9,6 @@ const newOrder = ({ currentUser }) => {
 
   const [orderName, setOrderName] = useState('');
   const [orderDate, setOrderDate] = useState('');
-  const [orderAmount, setOrderAmount] = useState(0);
   const [shipName, setShipName] = useState('');
   const [shipAddress, setShipAddress] = useState('');
   const [items, setItems] = useState([]);
@@ -27,7 +26,6 @@ const newOrder = ({ currentUser }) => {
     body: {
       orderName,
       orderDate,
-      orderAmount,
       shipName,
       shipAddress,
       items
@@ -49,10 +47,6 @@ const newOrder = ({ currentUser }) => {
         <div className='form-group'>
           <label>Date</label>
           <input type='date' className='form-control' value={orderDate} onChange={e => setOrderDate(e.target.value)} />
-        </div>
-        <div className='form-group'>
-          <label>Amount</label>
-          <input type='number' className='form-control' value={orderAmount} onChange={e => setOrderAmount(e.target.value)} />
         </div>
         <div className='form-group'>
           <label>Ship Name</label>
