@@ -15,6 +15,7 @@ router.get("/api/orders/:id",currentUser,isEmployee, async(req:Request,res:Respo
         if(!order){
             throw new NotFoundError();
         }
+        res.send(order);
      
     }catch(err :any){
         next(err)

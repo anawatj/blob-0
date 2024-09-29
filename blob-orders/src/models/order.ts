@@ -37,17 +37,17 @@ const orderSchema = new mongoose.Schema({
     },
     orderStatus: {
         type: String,
-        required: true,
+        required:true,
         enum: Object.values(OrderStatus),
         default: OrderStatus.Waiting,
       },
     cardNumber:{
-        type: String ,
-        required: true,
+        type:String,
+        required:true,
     },
     cardHolder:{
-        type: String,
-        required: true
+        type:String,
+        required:true
     },
     shipName:{
         type:String,

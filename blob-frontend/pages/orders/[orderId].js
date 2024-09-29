@@ -46,19 +46,19 @@ const OrderUpdate = ({ order, currentUser, orderId }) => {
             </div>
             <div className='form-group'>
                 <label>CardNumber</label>
-                <input className="form-control" value={cardNumber} onChange={e => setCardNumber(e.target.value)} />
+                <input className="form-control" value={cardNumber} disabled={true} onChange={e => setCardNumber(e.target.value)} />
             </div>
             <div className='form-group'>
                 <label>CardHolder</label>
-                <input className="form-control" value={cardHolder} onChange={e => setCardHolder(e.target.value)} />
+                <input className="form-control" value={cardHolder} disabled={true} onChange={e => setCardHolder(e.target.value)} />
             </div>
             <div className='form-group'>
                 <label>Ship Name</label>
-                <input className="form-control" value={shipName} onChange={e => setShipName(e.target.value)} />
+                <input className="form-control" value={shipName} disabled={true} onChange={e => setShipName(e.target.value)} />
             </div>
             <div className='form-group'>
                 <label>shipAddress</label>
-                <textarea className='form-control' value={shipAddress} onChange={e => setShipAddress(e.target.value)} />
+                <textarea className='form-control' value={shipAddress} disabled={true} onChange={e => setShipAddress(e.target.value)} />
             </div>
             
             {errors}
