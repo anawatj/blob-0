@@ -8,6 +8,10 @@ const LandingPage = ({ currentUser, stores }) => {
   const [carts, setCarts] = useState([]);
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const router = useRouter();
+  useEffect(()=>{
+    localStorage.clear();
+    localStorage.setItem("data",JSON.stringify(carts));
+  },[carts])
   const addToCard = (store) => {
     if (!carts.map(c => c.id).includes(store.id)) {
       carts.push({ id: store.id, name: store.name, image: store.image, price: store.price, qty: 1 });
@@ -29,7 +33,7 @@ const LandingPage = ({ currentUser, stores }) => {
     //sessionStorage.setItem("carts",carts.map(cart=>{
     //  return {bookId:cart.id,qty:cart.qty,price:cart.price}
     //}));
-    localStorage.clear();
+    //localStorage.clear();
     const data = carts.map(cart=>{
       return {bookId:cart.id,qty:cart.qty,price:cart.price}
     })
