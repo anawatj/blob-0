@@ -17,7 +17,6 @@ const OrderIndex = ({ orders, currentUser, client }) => {
 
     const handleDelete=async(id)=>{
         if(confirm("Are you sure to delete this orders")){
-            console.log(id);
             const result = await axios.delete(`/api/orders/${id}`);
             router.reload();
         }

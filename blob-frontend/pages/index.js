@@ -29,22 +29,11 @@ const LandingPage = ({ currentUser, stores }) => {
     setIsCartModalOpen(false);
   }
   const payment = () => {
-    //sessionStorage.clear();
-    //sessionStorage.setItem("carts",carts.map(cart=>{
-    //  return {bookId:cart.id,qty:cart.qty,price:cart.price}
-    //}));
-    //localStorage.clear();
     const data = carts.map(cart=>{
       return {bookId:cart.id,qty:cart.qty,price:cart.price}
     })
    localStorage.setItem("data",JSON.stringify(data));
-   
-    
     router.push("/orders/new");
-  
-   // router.push("/orders/new",{state:data});
-   
-
   }
 
   return currentUser && currentUser != null ? (

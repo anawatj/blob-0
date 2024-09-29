@@ -18,7 +18,6 @@ const BookIndex = ({ books, currentUser,client }) => {
     }
     const handleDelete=async(id)=>{
         if(confirm("Are you sure to delete this books")){
-            console.log(id);
             const result = await axios.delete(`/api/books/${id}`);
             router.reload();
         }
