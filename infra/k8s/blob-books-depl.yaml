@@ -16,6 +16,14 @@ spec:
         - name: blob-books
           image: anawatj/blob-books
           env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: blob
             - name: MONGO_URI
               value: 'mongodb://blob-books-mongo-srv:27017/books'
             - name: JWT_KEY

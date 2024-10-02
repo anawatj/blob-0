@@ -4,6 +4,8 @@ import { validateRequest,NotFoundError,requireAuth,NotAuthorizedError, currentUs
 import { Order } from '../models/order';
 //import { natsWrapper } from '../nats-wrapper';
 import { OrderStatus } from '@taoblob/commons';
+import { OrderApprovedPublisher } from '../events/order-approved-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -55,6 +57,10 @@ async(req:Request,res:Response,next:NextFunction)=>{
            userId:req.currentUser!.id
         });
         await order.save();
+
+        const books = order.items;
+
+        new OrderApprovedPublisher(natsWrapper.client).publish(books)
        
     
         res.send(order);
